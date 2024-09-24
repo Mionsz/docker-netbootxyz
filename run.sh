@@ -1,8 +1,8 @@
 #!/bin/bash
 
 set -exo pipefail
-SCRIPT_DIR="$(readlink -f "$(dirname -- "${BASH_SOURCE[0]}")")"
 
+SCRIPT_DIR="$(readlink -f "$(dirname -- "${BASH_SOURCE[0]}")")"
 RUN_PROXY_ARGS=("-d" "-u" "0:0" "--name=netbootxyz" "--net=host" "--privileged" "--restart" "unless-stopped")
 RUN_PROXY_ARGS+=("-e" "http_proxy=${http_proxy}" "-e" "https_proxy=${https_proxy}" "-e" "no_proxy=${no_proxy}" "-e" "TZ=Europe/Warsaw")
 

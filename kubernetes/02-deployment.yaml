@@ -1,0 +1,60 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: netbootxyz
+  namespace: netbootxyz
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: netbootxyz
+  template:
+    metadata:
+      labels:
+        app: netbootxyz
+    spec:
+      hostNetwork: true
+      restartPolicy: Always
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: kubernetes.io/hostname
+                operator: In
+                values:
+                - r03s18c0
+      containers:
+      - name: netbootxyz
+        image: ger-is-registry.caas.intel.com/nex-vs-cicd-automation/tools/netboot-xyz:latest
+        imagePullPolicy: Always
+        tty: true
+        ports:
+        - name: webconfig
+          containerPort: 31000
+          protocol: TCP
+        - name: tftp
+          containerPort: 69
+          protocol: UDP
+        - name: webassets
+          containerPort: 31080
+          protocol: TCP
+        securityContext:
+          privileged: true
+          runAsUser: 0
+        envFrom:
+        - configMapRef:
+            name: netbootxyz-config
+        volumeMounts:
+        - name: config-volume
+          mountPath: /config
+        - name: assets-volume
+          mountPath: /assets
+      volumes:
+      - name: config-volume
+        persistentVolumeClaim:
+          claimName: netbootxyz-config-pvc
+      - name: assets-volume
+        persistentVolumeClaim:
+          claimName: netbootxyz-asset-pvc

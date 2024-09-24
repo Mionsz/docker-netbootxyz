@@ -1,0 +1,13 @@
+webapp/.git*
+webapp/.gitignore
+webapp/Dockerfile
+webapp/LICENSE
+webapp/README.md
+.git*
+.gitignore*
+.gitmodules*
+Dockerfile
+README.md
+renovate.json
+run.sh
+build.sh
