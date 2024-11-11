@@ -24,42 +24,8 @@ spec:
     port: 31080
     nodePort: 31080
     protocol: TCP
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  labels:
-    app: netbootxyz
-    kubernetes.io/name: CoreDNS
-  name: netbootxyz-udp
-  namespace: netbootxyz
-spec:
-  externalTrafficPolicy: Local
-  sessionAffinity: None
-  type: NodePort
-  selector:
-    app: netbootxyz
-  ports:
   - name: tftp
     targetPort: tftp
     port: 69
     nodePort: 31069
     protocol: UDP
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: netbootxyz-udp
-  namespace: netbootxyz
-spec:
-  type: NodePort
-  selector:
-    app: netbootxyz
-  ports:
-  - name: tftp
-    targetPort: tftp
-    protocol: UDP
-    port: 69
-    nodePort: 30069

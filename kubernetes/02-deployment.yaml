@@ -34,12 +34,12 @@ spec:
         - name: webconfig
           containerPort: 31000
           protocol: TCP
-        - name: tftp
-          containerPort: 69
-          protocol: UDP
         - name: webassets
           containerPort: 31080
           protocol: TCP
+        - name: tftp
+          containerPort: 69
+          protocol: UDP
         securityContext:
           privileged: true
           runAsUser: 0
