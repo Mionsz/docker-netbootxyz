@@ -1,5 +1,9 @@
 FROM alpine:3.20
 
+# For compliance with ironic/metal3 images
+ARG IRONIC_UID=997
+ARG IRONIC_GID=994
+
 # set version label
 ARG VERSION="1.1.0"
 
@@ -47,7 +51,10 @@ RUN apk upgrade --no-cache && \
     usermod -G users nbxyz && \
     npm install --prefix /app && \
     apk del --purge build-dependencies && \
-    rm -rf /tmp/*
+    rm -rf /tmp/* && \
+    getent group ironic > /dev/null || groupadd -r ironic -g "${IRONIC_GID}" && \
+    getent passwd ironic > /dev/null || useradd -r -g ironic -u "${IRONIC_UID}" -s /sbin/nologin ironic -d /var/lib/ironic && \
+    chown -R ${IRONIC_UID}:${IRONIC_GID} /app /config /defaults /start.sh /init.sh /etc/supervisor.conf /defaults
 
 RUN /init.sh
 
